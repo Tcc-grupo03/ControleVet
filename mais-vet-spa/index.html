@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MaisVet · Clínica Viva Pet</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <div id="app">
+    <aside id="menu" class="menu oculto">
+      <div class="cabecalho-menu">
+        <button id="btn-menu" class="btn-menu" type="button" aria-label="Recolher menu" aria-expanded="true"
+          aria-controls="navegacao-menu">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </button>
+        <div class="marca">MaisVet</div>
+      </div>
+      <nav id="navegacao-menu">
+        <a href="#visao-geral" aria-label="Visão geral" title="Visão geral">
+          <span class="rotulo-nav" aria-hidden="true">Visão geral</span>
+          <span class="atalho-nav" aria-hidden="true">VG</span></a>
+        <a href="#agenda" aria-label="Agenda" title="Agenda">
+          <span class="rotulo-nav" aria-hidden="true">Agenda</span>
+          <span class="atalho-nav" aria-hidden="true">AG</span></a>
+        <a href="#pacientes" aria-label="Pacientes" title="Pacientes">
+          <span class="rotulo-nav" aria-hidden="true">Pacientes</span>
+          <span class="atalho-nav" aria-hidden="true">PA</span></a>
+        <a href="#tutores" aria-label="Tutores" title="Tutores">
+          <span class="rotulo-nav" aria-hidden="true">Tutores</span>
+          <span class="atalho-nav" aria-hidden="true">TU</span></a>
+        <a href="#procedimentos" aria-label="Procedimentos" title="Procedimentos">
+          <span class="rotulo-nav" aria-hidden="true">Procedimentos</span>
+          <span class="atalho-nav" aria-hidden="true">PR</span></a>
+        <a href="#clinicos" aria-label="Clínicos cadastrados" title="Clínicos cadastrados">
+          <span class="rotulo-nav" aria-hidden="true">Clínicos cadastrados</span>
+          <span class="atalho-nav" aria-hidden="true">CL</span></a>
+        <a href="#financeiro" aria-label="Financeiro" title="Financeiro">
+          <span class="rotulo-nav" aria-hidden="true">Financeiro</span>
+          <span class="atalho-nav" aria-hidden="true">FI</span></a>
+        <a href="#relatorios" aria-label="Relatórios" title="Relatórios">
+          <span class="rotulo-nav" aria-hidden="true">Relatórios</span>
+          <span class="atalho-nav" aria-hidden="true">RE</span></a>
+        <a href="#configuracoes" aria-label="Configurações" title="Configurações">
+          <span class="rotulo-nav" aria-hidden="true">Configurações</span>
+          <span class="atalho-nav" aria-hidden="true">CO</span></a>
+      </nav>
+      <button id="btn-sair" class="btn-secundario" aria-label="Sair da conta" title="Sair da conta">
+        <span class="rotulo-sair" aria-hidden="true">Sair da conta</span>
+        <span class="atalho-sair" aria-hidden="true">SA</span>
+      </button>
+    </aside>
+
+    <main id="conteudo"></main>
+  </div>
+
+  <script src="js/dados.js"></script>
+  <script src="js/rotas.js"></script>
+  <script src="js/app.js"></script>
+</body>
+
+</html>

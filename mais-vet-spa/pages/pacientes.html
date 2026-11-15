@@ -1,0 +1,31 @@
+<section class="cabecalho-pagina">
+  <div>
+    <h1>Pacientes</h1>
+    <p class="texto-apoio">Pets cadastrados na Clínica Viva Pet · Unidade Jardins</p>
+  </div>
+</section>
+
+<div class="barra-filtros">
+  <input type="search" id="filtro-busca" placeholder="Buscar nome, identificação ou tutor">
+  <select id="filtro-especie">
+    <option value="">Todas as espécies</option>
+    <option value="Canina">Canina</option>
+    <option value="Felina">Felina</option>
+  </select>
+</div>
+
+<p id="contador" class="texto-apoio" style="margin-bottom:12px"></p>
+
+<table class="tabela">
+  <thead>
+    <tr>
+      <th>Paciente</th>
+      <th>Espécie / raça</th>
+      <th>Tutor</th>
+      <th>Última visita</th>
+      <th>Situação</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody id="corpo-tabela"></tbody>
+</table>

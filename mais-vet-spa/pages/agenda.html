@@ -1,0 +1,414 @@
+<style>
+  .agenda-pagina {
+    --agenda-verde: #0f766e;
+    --agenda-claro: #f0fdfa;
+    --agenda-borda: #e5eaf0;
+  }
+
+  .agenda-pagina .cabecalho-pagina {
+    align-items: flex-start;
+  }
+
+  .agenda-acoes,
+  .agenda-data,
+  .agenda-filtros,
+  .agenda-legenda,
+  .agenda-paciente,
+  .agenda-horario {
+    display: flex;
+    align-items: center;
+  }
+
+  .agenda-acoes {
+    gap: 8px;
+  }
+
+  .agenda-data {
+    gap: 12px;
+  }
+
+  .agenda-data strong {
+    min-width: 180px;
+    text-align: center;
+  }
+
+  .agenda-seta {
+    width: 38px;
+    height: 38px;
+    border: 1px solid var(--agenda-borda);
+    border-radius: 8px;
+    background: #fff;
+    color: #334155;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+
+  .agenda-seta:hover {
+    background: #f8fafc;
+  }
+
+  .agenda-pagina .cards {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  }
+
+  .agenda-pagina .card {
+    border: 1px solid var(--agenda-borda);
+    box-shadow: none;
+  }
+
+  .agenda-pagina .card strong {
+    color: #0f3d3a;
+  }
+
+  .agenda-filtros {
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .agenda-filtros input,
+  .agenda-filtros select {
+    width: auto;
+    min-width: 180px;
+    background: #fff;
+  }
+
+  .agenda-filtros input[type="search"] {
+    flex: 1;
+    min-width: 220px;
+  }
+
+  .agenda-grade {
+    overflow: hidden;
+    padding: 0;
+  }
+
+  .agenda-grade-cabecalho {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--agenda-borda);
+  }
+
+  .agenda-grade-cabecalho h2 {
+    margin: 0;
+  }
+
+  .agenda-legenda {
+    flex-wrap: wrap;
+    gap: 14px;
+    color: #64748b;
+    font-size: 0.82rem;
+  }
+
+  .agenda-legenda span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .agenda-ponto {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #0f766e;
+  }
+
+  .agenda-ponto.confirmado {
+    background: #2563eb;
+  }
+
+  .agenda-ponto.concluido {
+    background: #16a34a;
+  }
+
+  .agenda-linha {
+    display: grid;
+    grid-template-columns: 76px minmax(0, 1fr);
+    min-height: 82px;
+    border-bottom: 1px solid #eef2f5;
+  }
+
+  .agenda-linha:last-child {
+    border-bottom: 0;
+  }
+
+  .agenda-horario {
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 18px;
+    color: #64748b;
+    font-size: 0.85rem;
+    border-right: 1px solid #eef2f5;
+  }
+
+  .agenda-slot {
+    padding: 8px 12px;
+  }
+
+  .agenda-consulta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    height: 100%;
+    padding: 12px 14px;
+    border-left: 3px solid #0f766e;
+    border-radius: 8px;
+    background: var(--agenda-claro);
+  }
+
+  .agenda-consulta.confirmada {
+    border-left-color: #2563eb;
+    background: #eff6ff;
+  }
+
+  .agenda-consulta.concluida {
+    border-left-color: #16a34a;
+    background: #f0fdf4;
+  }
+
+  .agenda-paciente {
+    gap: 12px;
+    min-width: 0;
+  }
+
+  .agenda-avatar {
+    display: grid;
+    place-items: center;
+    flex: 0 0 38px;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #ccfbf1;
+    color: #115e59;
+    font-size: 0.85rem;
+    font-weight: bold;
+  }
+
+  .agenda-consulta.confirmada .agenda-avatar {
+    background: #dbeafe;
+    color: #1d4ed8;
+  }
+
+  .agenda-consulta.concluida .agenda-avatar {
+    background: #dcfce7;
+    color: #166534;
+  }
+
+  .agenda-detalhes {
+    min-width: 0;
+  }
+
+  .agenda-detalhes strong,
+  .agenda-detalhes small {
+    display: block;
+  }
+
+  .agenda-detalhes small {
+    margin-top: 4px;
+    color: #64748b;
+    font-size: 0.82rem;
+  }
+
+  .agenda-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .agenda-status {
+    white-space: nowrap;
+  }
+
+  .agenda-status.confirmado {
+    background: #dbeafe;
+    color: #1d4ed8;
+  }
+
+  .agenda-status.concluido {
+    background: #dcfce7;
+    color: #166534;
+  }
+
+  .agenda-duracao {
+    color: #64748b;
+    font-size: 0.82rem;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 700px) {
+    .agenda-grade-cabecalho {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .agenda-linha {
+      grid-template-columns: 56px minmax(0, 1fr);
+    }
+
+    .agenda-consulta {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .agenda-info {
+      justify-content: space-between;
+      width: 100%;
+      padding-left: 50px;
+    }
+  }
+
+  @media (max-width: 440px) {
+    .agenda-data {
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    .agenda-data strong {
+      min-width: 0;
+      font-size: 0.9rem;
+    }
+
+    .agenda-acoes {
+      width: 100%;
+    }
+
+    .agenda-acoes .btn-primario {
+      flex: 1;
+    }
+  }
+</style>
+
+<div class="agenda-pagina">
+  <section class="cabecalho-pagina">
+    <div>
+      <h1>Agenda</h1>
+      <p class="texto-apoio">Organize os atendimentos da Clínica Viva Pet · Unidade Jardins</p>
+    </div>
+    <div class="agenda-acoes">
+      <button class="btn-secundario" type="button">＋ Bloquear horário</button>
+      <button class="btn-primario" type="button">＋ Novo agendamento</button>
+    </div>
+  </section>
+
+  <section class="cards" aria-label="Resumo dos atendimentos">
+    <article class="card"><span>Atendimentos hoje</span><strong>12</strong></article>
+    <article class="card"><span>Confirmados</span><strong>8</strong></article>
+    <article class="card"><span>Aguardando confirmação</span><strong>3</strong></article>
+    <article class="card"><span>Vagas disponíveis</span><strong>5</strong></article>
+  </section>
+
+  <section class="agenda-filtros" aria-label="Filtros da agenda">
+    <div class="agenda-data">
+      <button class="agenda-seta" type="button" aria-label="Dia anterior">‹</button>
+      <strong>Terça-feira, 20 de outubro</strong>
+      <button class="agenda-seta" type="button" aria-label="Próximo dia">›</button>
+      <button class="btn-secundario" type="button">Hoje</button>
+    </div>
+    <input type="search" aria-label="Buscar paciente ou tutor" placeholder="Buscar paciente ou tutor">
+    <select aria-label="Filtrar por profissional">
+      <option>Todos os profissionais</option>
+      <option>Dra. Marina Costa</option>
+      <option>Dr. Rafael Alves</option>
+      <option>Dra. Beatriz Souza</option>
+    </select>
+    <select aria-label="Filtrar por situação">
+      <option>Todas as situações</option>
+      <option>Confirmado</option>
+      <option>Aguardando</option>
+      <option>Concluído</option>
+    </select>
+  </section>
+
+  <section class="bloco agenda-grade" aria-labelledby="titulo-grade-agenda">
+    <header class="agenda-grade-cabecalho">
+      <h2 id="titulo-grade-agenda">Atendimentos do dia</h2>
+      <div class="agenda-legenda" aria-label="Legenda de situações">
+        <span><i class="agenda-ponto"></i> Aguardando</span>
+        <span><i class="agenda-ponto confirmado"></i> Confirmado</span>
+        <span><i class="agenda-ponto concluido"></i> Concluído</span>
+      </div>
+    </header>
+
+    <div class="agenda-linha">
+      <time class="agenda-horario">08:00</time>
+      <div class="agenda-slot"></div>
+    </div>
+    <div class="agenda-linha">
+      <time class="agenda-horario">08:30</time>
+      <div class="agenda-slot">
+        <article class="agenda-consulta concluida">
+          <div class="agenda-paciente">
+            <span class="agenda-avatar" aria-hidden="true">BE</span>
+            <div class="agenda-detalhes"><strong>Bento · Consulta clínica</strong><small>Pedro Lima · Dr. Rafael Alves</small></div>
+          </div>
+          <div class="agenda-info"><span class="selo agenda-status concluido">Concluído</span><span class="agenda-duracao">30 min</span></div>
+        </article>
+      </div>
+    </div>
+    <div class="agenda-linha">
+      <time class="agenda-horario">09:00</time>
+      <div class="agenda-slot">
+        <article class="agenda-consulta">
+          <div class="agenda-paciente">
+            <span class="agenda-avatar" aria-hidden="true">ME</span>
+            <div class="agenda-detalhes"><strong>Mel · Consulta clínica</strong><small>Juliana Santos · Dra. Marina Costa</small></div>
+          </div>
+          <div class="agenda-info"><span class="selo agenda-status">Em atendimento</span><span class="agenda-duracao">45 min</span></div>
+        </article>
+      </div>
+    </div>
+    <div class="agenda-linha">
+      <time class="agenda-horario">09:30</time>
+      <div class="agenda-slot">
+        <article class="agenda-consulta confirmada">
+          <div class="agenda-paciente">
+            <span class="agenda-avatar" aria-hidden="true">TH</span>
+            <div class="agenda-detalhes"><strong>Thor · Ultrassonografia</strong><small>Lucas Ferreira · Dra. Beatriz Souza</small></div>
+          </div>
+          <div class="agenda-info"><span class="selo agenda-status confirmado">Confirmado</span><span class="agenda-duracao">60 min</span></div>
+        </article>
+      </div>
+    </div>
+    <div class="agenda-linha">
+      <time class="agenda-horario">10:00</time>
+      <div class="agenda-slot"></div>
+    </div>
+    <div class="agenda-linha">
+      <time class="agenda-horario">10:30</time>
+      <div class="agenda-slot">
+        <article class="agenda-consulta confirmada">
+          <div class="agenda-paciente">
+            <span class="agenda-avatar" aria-hidden="true">LU</span>
+            <div class="agenda-detalhes"><strong>Luna · Vacinação</strong><small>Ana Oliveira · Dr. Rafael Alves</small></div>
+          </div>
+          <div class="agenda-info"><span class="selo agenda-status confirmado">Confirmado</span><span class="agenda-duracao">30 min</span></div>
+        </article>
+      </div>
+    </div>
+    <div class="agenda-linha">
+      <time class="agenda-horario">11:00</time>
+      <div class="agenda-slot"></div>
+    </div>
+    <div class="agenda-linha">
+      <time class="agenda-horario">11:30</time>
+      <div class="agenda-slot">
+        <article class="agenda-consulta">
+          <div class="agenda-paciente">
+            <span class="agenda-avatar" aria-hidden="true">NI</span>
+            <div class="agenda-detalhes"><strong>Nina · Retorno</strong><small>Fernanda Rocha · Dra. Marina Costa</small></div>
+          </div>
+          <div class="agenda-info"><span class="selo agenda-status">Aguardando</span><span class="agenda-duracao">30 min</span></div>
+        </article>
+      </div>
+    </div>
+    <div class="agenda-linha">
+      <time class="agenda-horario">12:00</time>
+      <div class="agenda-slot"></div>
+    </div>
+  </section>
+</div>
