@@ -263,7 +263,7 @@ label {
   background: #fff;
   padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 2px 8px #0000002f;
+  border: 1px solid #e5eaf0;
 }
 
 .card span {
