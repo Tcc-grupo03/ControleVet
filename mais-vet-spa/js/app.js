@@ -2,7 +2,7 @@ const conteudo = document.getElementById('conteudo');
 const menu = document.getElementById('menu');
 const btnMenu = document.getElementById('btn-menu');
 
-const USUARIO_TESTE = { email: 'marina@vivapet.com.br', senha: 'Senha123' };
+const USUARIO_TESTE = { email: 'admin@email.com', senha: 'Senha123' };
 
 function estaLogado() {
   return sessionStorage.getItem('logado') === 'true';
