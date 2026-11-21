@@ -1,0 +1,112 @@
+<div class="clientes-pagina">
+  <section class="cabecalho-pagina">
+    <div>
+      <h1>Clientes</h1>
+      <p class="texto-apoio">Cadastre os tutores e mantenha os dados dos pets organizados.</p>
+    </div>
+  </section>
+
+  <section class="cards clientes-resumo" aria-label="Resumo de clientes e pets">
+    <article class="card"><span>Clientes cadastrados</span><strong id="contador-clientes">0</strong></article>
+    <article class="card"><span>Pets vinculados</span><strong id="contador-pets">0</strong></article>
+  </section>
+
+  <section class="bloco clientes-cadastro" aria-labelledby="titulo-cadastro-cliente">
+    <header class="clientes-secao-cabecalho">
+      <div>
+        <h2 id="titulo-cadastro-cliente">Cadastrar cliente</h2>
+        <p id="descricao-form-cliente" class="texto-apoio">Preencha os dados do tutor e adicione um ou mais pets.</p>
+      </div>
+    </header>
+
+    <form id="form-cliente">
+      <div class="clientes-form-grid">
+        <label>Nome completo *
+          <input id="cliente-nome" type="text" required maxlength="120" autocomplete="name">
+        </label>
+        <label>Telefone *
+          <input id="cliente-telefone" type="tel" required maxlength="30" autocomplete="tel">
+        </label>
+        <label>E-mail
+          <input id="cliente-email" type="email" maxlength="120" autocomplete="email">
+        </label>
+        <label>CPF
+          <input id="cliente-cpf" type="text" maxlength="14" autocomplete="off">
+        </label>
+        <label class="cliente-endereco">Endereço
+          <input id="cliente-endereco" type="text" maxlength="180" autocomplete="street-address">
+        </label>
+      </div>
+
+      <div class="clientes-secao-cabecalho clientes-pets-cabecalho">
+        <div>
+          <h2>Pets</h2>
+          <p class="texto-apoio">Cada pet ficará vinculado a este cliente.</p>
+        </div>
+        <button id="adicionar-pet" class="btn-secundario" type="button">＋ Adicionar pet</button>
+      </div>
+
+      <div id="lista-pets-form" class="clientes-pets-form">
+        <div class="cliente-pet-form">
+          <div class="cliente-pet-campos">
+            <label>Nome do pet *
+              <input class="pet-nome" type="text" required maxlength="80">
+            </label>
+            <label>Espécie *
+              <select class="pet-especie" required>
+                <option value="">Selecione</option>
+                <option>Canina</option>
+                <option>Felina</option>
+                <option>Ave</option>
+                <option>Réptil</option>
+                <option>Roedor</option>
+                <option>Outra</option>
+              </select>
+            </label>
+            <label>Raça *
+              <input class="pet-raca" type="text" required maxlength="80">
+            </label>
+            <div class="cliente-pet-visita">
+              <button class="btn-secundario btn-visita-pet" type="button">＋ Registrar data de visita</button>
+              <label class="campo-visita oculto">Data de visita
+                <input class="pet-ultima-visita" type="date">
+              </label>
+            </div>
+          </div>
+          <button class="btn-remover-pet remover-pet" type="button" aria-label="Remover pet" disabled>Remover</button>
+        </div>
+      </div>
+
+      <div class="clientes-form-rodape">
+        <p id="mensagem-cliente" class="mensagem-cliente" role="status" aria-live="polite"></p>
+        <button id="cancelar-edicao-cliente" class="btn-secundario" type="button" hidden>Cancelar edição</button>
+        <button class="btn-primario" type="submit">Salvar cadastro</button>
+      </div>
+    </form>
+  </section>
+
+  <section class="bloco clientes-lista" aria-labelledby="titulo-lista-clientes">
+    <header class="clientes-lista-cabecalho">
+      <div>
+        <h2 id="titulo-lista-clientes">Clientes cadastrados</h2>
+        <p class="texto-apoio">Contatos demonstrativos podem ser editados para informar os dados corretos.</p>
+      </div>
+      <input id="filtro-clientes" type="search" aria-label="Buscar clientes ou pets" placeholder="Buscar cliente, telefone ou pet">
+    </header>
+
+    <div class="clientes-tabela-contorno">
+      <table class="tabela">
+        <thead>
+          <tr>
+            <th>Cliente</th>
+            <th>Telefone</th>
+            <th>Pets</th>
+            <th>Qtd.</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="corpo-clientes"></tbody>
+      </table>
+    </div>
+  </section>
+</div>
