@@ -190,7 +190,7 @@ function iniciarClientes() {
         </label>
         <label>Raça<input class="pet-raca" type="text" required maxlength="80"></label>
           <div class="cliente-pet-visita">
-            <button class="btn-secundario btn-visita-pet" type="button">＋ Registrar última visita</button>
+            <button class="btn-secundario btn-visita-pet" type="button">＋ Registrar data de visita</button>
             <label class="campo-visita oculto">Data da última visita
               <input class="pet-ultima-visita" type="date">
             </label>
@@ -289,7 +289,7 @@ function iniciarClientes() {
     if (botaoVisita) {
       const campoVisita = botaoVisita.closest('.cliente-pet-form').querySelector('.campo-visita');
       const oculto = campoVisita.classList.toggle('oculto');
-      botaoVisita.textContent = oculto ? '＋ Registrar última visita' : 'Ocultar data';
+      botaoVisita.textContent = oculto ? '＋ Registrar data de visita' : 'Ocultar data';
       if (!oculto) campoVisita.querySelector('input').focus();
       return;
     }
