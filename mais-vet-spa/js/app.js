@@ -159,9 +159,9 @@ function iniciarClientes() {
     return;
   }
 
-  function mostrarMensagem(texto, ehErro) {
+  function mostrarMensagem(texto, isError) {
     mensagem.textContent = texto;
-    mensagem.classList.toggle('erro', ehErro);
+    mensagem.classList.toggle('erro', isError);
   }
 
   function atualizarBotoesRemover() {
