@@ -706,6 +706,65 @@ label {
   min-width: 0;
 }
 
+.prontuario-busca-paciente {
+  position: relative;
+}
+
+.prontuario-paciente-opcoes {
+  position: absolute;
+  z-index: 2;
+  top: calc(100% + 4px);
+  right: 0;
+  left: 0;
+  max-height: 240px;
+  overflow-y: auto;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 12%);
+}
+
+.prontuario-paciente-opcoes[hidden],
+.prontuario-paciente-opcoes [hidden] {
+  display: none;
+}
+
+.prontuario-paciente-opcoes button {
+  display: block;
+  width: 100%;
+  padding: 10px 12px;
+  border: 0;
+  background: #fff;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.prontuario-paciente-opcoes button + button {
+  border-top: 1px solid #e2e8f0;
+}
+
+.prontuario-paciente-opcoes button:hover,
+.prontuario-paciente-opcoes button:focus-visible {
+  background: #f1f5f9;
+}
+
+.prontuario-paciente-opcoes button strong,
+.prontuario-paciente-opcoes button span {
+  display: block;
+}
+
+.prontuario-paciente-opcoes button span,
+#sem-resultados-prontuario-paciente {
+  margin-top: 3px;
+  color: #64748b;
+  font-size: 0.86rem;
+}
+
+#sem-resultados-prontuario-paciente {
+  padding: 10px 12px;
+}
+
 .procedimentos-pagina textarea {
   width: 100%;
   min-height: 82px;

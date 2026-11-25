@@ -3,6 +3,7 @@ const menu = document.getElementById('menu');
 const btnMenu = document.getElementById('btn-menu');
 
 const USUARIO_TESTE = { email: 'admin@email.com', senha: 'Senha123' };
+const CHAVE_PACIENTE_PRONTUARIO_SELECIONADO = 'paciente-prontuario-selecionado';
 
 function estaLogado() {
   return sessionStorage.getItem('logado') === 'true';
@@ -97,6 +98,13 @@ function iniciarPacientes() {
   const corpo = document.getElementById('corpo-tabela');
   const contador = document.getElementById('contador');
 
+  corpo.addEventListener('click', evento => {
+    const linkFicha = evento.target.closest('a[data-paciente-id]');
+    if (linkFicha) {
+      sessionStorage.setItem(CHAVE_PACIENTE_PRONTUARIO_SELECIONADO, linkFicha.dataset.pacienteId);
+    }
+  });
+
   function desenhar() {
     const termo = busca.value.trim().toLowerCase();
     let todosPacientes;
@@ -125,7 +133,7 @@ function iniciarPacientes() {
             <td>${escaparHtml(p.tutor)}</td>
             <td>${escaparHtml(p.ultimaVisita)}</td>
             <td><span class="selo">Ativo</span></td>
-            <td><a href="#pacientes">Ver ficha</a></td>
+            <td><a href="#procedimentos" data-paciente-id="${escaparHtml(p.id)}" aria-label="Ver ficha de ${escaparHtml(p.nome)}">Ver ficha</a></td>
           </tr>`).join('')
       : '<tr><td colspan="6">Nenhum paciente encontrado.</td></tr>';
   }
@@ -137,26 +145,32 @@ function iniciarPacientes() {
 
 function iniciarProcedimentos() {
   const form = document.getElementById('form-prontuario');
-  const seletorPaciente = document.getElementById('prontuario-paciente');
+  const campoPaciente = document.getElementById('prontuario-paciente');
+  const resultadosPaciente = document.getElementById('resultados-prontuario-paciente');
+  const opcoesPaciente = document.getElementById('opcoes-prontuario-paciente');
+  const semResultadosPaciente = document.getElementById('sem-resultados-prontuario-paciente');
   const filtroHistorico = document.getElementById('filtro-prontuario');
   const lista = document.getElementById('lista-prontuarios');
   const resumoPaciente = document.getElementById('resumo-paciente-prontuario');
   const contadorHistorico = document.getElementById('contador-historico-prontuario');
   const mensagem = document.getElementById('mensagem-prontuario');
   const botaoSalvar = document.getElementById('salvar-prontuario');
+  const pacienteSolicitadoId = sessionStorage.getItem(CHAVE_PACIENTE_PRONTUARIO_SELECIONADO);
+  sessionStorage.removeItem(CHAVE_PACIENTE_PRONTUARIO_SELECIONADO);
   const hoje = new Date();
   const dataLocal = new Date(hoje.getTime() - hoje.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
   document.getElementById('prontuario-data').value = dataLocal;
 
   let pacientes;
   let prontuarios;
+  let pacienteSelecionadoId = '';
   try {
     pacientes = obterPacientes();
     prontuarios = carregarProntuarios();
   } catch (erro) {
     mensagem.textContent = `Não foi possível carregar os dados: ${erro.message}`;
     mensagem.classList.add('erro');
-    seletorPaciente.disabled = true;
+    campoPaciente.disabled = true;
     botaoSalvar.disabled = true;
     lista.innerHTML = '<p class="prontuario-vazio">Não foi possível carregar as fichas médicas.</p>';
     return;
@@ -167,16 +181,42 @@ function iniciarProcedimentos() {
   document.getElementById('total-procedimentos-prontuario').textContent =
     prontuarios.filter(prontuario => prontuario.tipo === 'Procedimento').length;
 
-  seletorPaciente.innerHTML = pacientes.length
-    ? `<option value="">Selecione um pet</option>${pacientes.map(paciente => `
-        <option value="${escaparHtml(paciente.id)}">${escaparHtml(paciente.nome)} · ${escaparHtml(paciente.especie)} — ${escaparHtml(paciente.tutor)}</option>
-      `).join('')}`
-    : '<option value="">Nenhum pet cadastrado</option>';
-  seletorPaciente.disabled = pacientes.length === 0;
+  campoPaciente.disabled = pacientes.length === 0;
+  campoPaciente.placeholder = pacientes.length
+    ? 'Buscar por nome, código ou tutor'
+    : 'Nenhum pet cadastrado';
   botaoSalvar.disabled = pacientes.length === 0;
 
+  function desenharOpcoesPaciente() {
+    const termo = campoPaciente.value.trim().toLowerCase();
+    const filtrados = pacientes.filter(paciente =>
+      [paciente.nome, paciente.id, paciente.especie, paciente.raca, paciente.tutor]
+        .join(' ').toLowerCase().includes(termo)
+    );
+
+    opcoesPaciente.innerHTML = filtrados.map(paciente => `
+      <button type="button" role="option" aria-selected="false" data-paciente-id="${escaparHtml(paciente.id)}">
+        <strong>${escaparHtml(paciente.nome)} · ${escaparHtml(paciente.especie)} — ${escaparHtml(paciente.tutor)}</strong>
+        <span>${escaparHtml(paciente.id)} · ${escaparHtml(paciente.raca)}</span>
+      </button>
+    `).join('');
+    opcoesPaciente.hidden = filtrados.length === 0;
+    semResultadosPaciente.hidden = filtrados.length !== 0;
+    resultadosPaciente.hidden = false;
+    campoPaciente.setAttribute('aria-expanded', 'true');
+  }
+
+  function selecionarPaciente(paciente) {
+    pacienteSelecionadoId = paciente.id;
+    campoPaciente.value = `${paciente.nome} · ${paciente.especie} — ${paciente.tutor}`;
+    campoPaciente.setCustomValidity('');
+    resultadosPaciente.hidden = true;
+    campoPaciente.setAttribute('aria-expanded', 'false');
+    desenharHistorico();
+  }
+
   function desenharHistorico() {
-    const paciente = pacientes.find(item => item.id === seletorPaciente.value);
+    const paciente = pacientes.find(item => item.id === pacienteSelecionadoId);
     if (!paciente) {
       resumoPaciente.innerHTML = '';
       contadorHistorico.textContent = '';
@@ -224,14 +264,28 @@ function iniciarProcedimentos() {
       : `<p class="prontuario-vazio">${termo ? 'Nenhum registro corresponde à busca.' : 'Ainda não há atendimentos registrados para este pet.'}</p>`;
   }
 
-  seletorPaciente.addEventListener('change', desenharHistorico);
+  campoPaciente.setCustomValidity('Selecione um pet da lista.');
+  campoPaciente.addEventListener('focus', desenharOpcoesPaciente);
+  campoPaciente.addEventListener('input', () => {
+    pacienteSelecionadoId = '';
+    campoPaciente.setCustomValidity('Selecione um pet da lista.');
+    desenharOpcoesPaciente();
+    desenharHistorico();
+  });
+  opcoesPaciente.addEventListener('click', evento => {
+    const opcao = evento.target.closest('[data-paciente-id]');
+    if (!opcao) return;
+
+    const paciente = pacientes.find(item => item.id === opcao.dataset.pacienteId);
+    if (paciente) selecionarPaciente(paciente);
+  });
   filtroHistorico.addEventListener('input', desenharHistorico);
   form.addEventListener('submit', evento => {
     evento.preventDefault();
     const peso = document.getElementById('prontuario-peso').value;
     const novoProntuario = {
       id: gerarIdentificador('FICHA', prontuarios.map(prontuario => prontuario.id)),
-      pacienteId: seletorPaciente.value,
+      pacienteId: pacienteSelecionadoId,
       data: document.getElementById('prontuario-data').value,
       tipo: document.getElementById('prontuario-tipo').value,
       procedimento: document.getElementById('prontuario-procedimento').value.trim(),
@@ -265,7 +319,16 @@ function iniciarProcedimentos() {
     desenharHistorico();
   });
 
-  desenharHistorico();
+  const pacienteSolicitado = pacientes.find(item => item.id === pacienteSolicitadoId);
+  if (pacienteSolicitado) {
+    selecionarPaciente(pacienteSolicitado);
+  } else {
+    if (pacienteSolicitadoId) {
+      mensagem.textContent = 'Não foi possível localizar o pet para abrir a ficha médica.';
+      mensagem.classList.add('erro');
+    }
+    desenharHistorico();
+  }
 }
 
 function iniciarClientes() {

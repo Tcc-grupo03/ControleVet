@@ -23,9 +23,15 @@
 
       <form id="form-prontuario">
         <label>Pet *
-          <select id="prontuario-paciente" required>
-            <option value="">Carregando pacientes...</option>
-          </select>
+          <div class="prontuario-busca-paciente">
+            <input id="prontuario-paciente" type="search" required role="combobox" aria-autocomplete="list"
+              aria-expanded="false" aria-controls="opcoes-prontuario-paciente"
+              placeholder="Buscar por nome, código ou tutor" autocomplete="off">
+            <div id="resultados-prontuario-paciente" class="prontuario-paciente-opcoes" hidden>
+              <div id="opcoes-prontuario-paciente" role="listbox" aria-label="Pets encontrados"></div>
+              <p id="sem-resultados-prontuario-paciente" role="status" hidden>Nenhum pet encontrado.</p>
+            </div>
+          </div>
         </label>
 
         <div class="prontuario-form-grid">
