@@ -5,7 +5,7 @@ const rotas = {
   '#agenda':         { pagina: 'pages/agenda.html',   titulo: 'Agenda' },
   '#pacientes':      { pagina: 'pages/pacientes.html',  titulo: 'Pacientes' },
   '#clientes':        { pagina: 'pages/clientes.html',   titulo: 'Clientes' },
-  '#procedimentos':  { pagina: 'pages/em-breve.html',   titulo: 'Procedimentos' },
+  '#procedimentos':  { pagina: 'pages/procedimentos.html', titulo: 'Procedimentos' },
   '#clinicos':       { pagina: 'pages/em-breve.html',   titulo: 'Clínicos cadastrados' },
   '#financeiro':     { pagina: 'pages/em-breve.html',   titulo: 'Financeiro' },
   '#relatorios':     { pagina: 'pages/em-breve.html',   titulo: 'Relatórios' },

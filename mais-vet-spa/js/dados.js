@@ -10,6 +10,8 @@ const pacientes = [
 
 const CHAVE_CLIENTES = 'maisvet-clientes';
 const CHAVE_MIGRACAO_CLIENTES = 'maisvet-clientes-pacientes-migrados';
+const CHAVE_PRONTUARIOS = 'maisvet-prontuarios';
+const TIPOS_PRONTUARIO = ['Consulta', 'Vacinação', 'Exame', 'Procedimento', 'Retorno', 'Outro'];
 
 const contatosDemonstracao = {
   'Ana Oliveira': {
@@ -151,6 +153,41 @@ function carregarClientes() {
 
 function salvarClientes(clientes) {
   localStorage.setItem(CHAVE_CLIENTES, JSON.stringify(clientes));
+}
+
+function carregarProntuarios() {
+  const dados = localStorage.getItem(CHAVE_PRONTUARIOS);
+  if (!dados) return [];
+
+  let prontuarios;
+  try {
+    prontuarios = JSON.parse(dados);
+  } catch {
+    throw new Error('Os prontuários salvos estão inválidos. Limpe os dados do navegador para continuar.');
+  }
+
+  const prontuariosValidos = Array.isArray(prontuarios) && prontuarios.every(prontuario =>
+    prontuario &&
+    typeof prontuario.id === 'string' &&
+    typeof prontuario.pacienteId === 'string' &&
+    typeof prontuario.data === 'string' &&
+    /^\d{4}-\d{2}-\d{2}$/.test(prontuario.data) &&
+    TIPOS_PRONTUARIO.includes(prontuario.tipo) &&
+    typeof prontuario.procedimento === 'string' &&
+    typeof prontuario.profissional === 'string' &&
+    typeof prontuario.peso === 'string' &&
+    typeof prontuario.diagnostico === 'string' &&
+    typeof prontuario.conduta === 'string'
+  );
+  if (!prontuariosValidos) {
+    throw new Error('Os prontuários salvos estão inválidos. Limpe os dados do navegador para continuar.');
+  }
+
+  return prontuarios;
+}
+
+function salvarProntuarios(prontuarios) {
+  localStorage.setItem(CHAVE_PRONTUARIOS, JSON.stringify(prontuarios));
 }
 
 function obterPacientes() {

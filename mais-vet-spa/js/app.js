@@ -135,6 +135,139 @@ function iniciarPacientes() {
   desenhar();
 }
 
+function iniciarProcedimentos() {
+  const form = document.getElementById('form-prontuario');
+  const seletorPaciente = document.getElementById('prontuario-paciente');
+  const filtroHistorico = document.getElementById('filtro-prontuario');
+  const lista = document.getElementById('lista-prontuarios');
+  const resumoPaciente = document.getElementById('resumo-paciente-prontuario');
+  const contadorHistorico = document.getElementById('contador-historico-prontuario');
+  const mensagem = document.getElementById('mensagem-prontuario');
+  const botaoSalvar = document.getElementById('salvar-prontuario');
+  const hoje = new Date();
+  const dataLocal = new Date(hoje.getTime() - hoje.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+  document.getElementById('prontuario-data').value = dataLocal;
+
+  let pacientes;
+  let prontuarios;
+  try {
+    pacientes = obterPacientes();
+    prontuarios = carregarProntuarios();
+  } catch (erro) {
+    mensagem.textContent = `Não foi possível carregar os dados: ${erro.message}`;
+    mensagem.classList.add('erro');
+    seletorPaciente.disabled = true;
+    botaoSalvar.disabled = true;
+    lista.innerHTML = '<p class="prontuario-vazio">Não foi possível carregar as fichas médicas.</p>';
+    return;
+  }
+
+  document.getElementById('total-pets-prontuario').textContent = pacientes.length;
+  document.getElementById('total-registros-prontuario').textContent = prontuarios.length;
+  document.getElementById('total-procedimentos-prontuario').textContent =
+    prontuarios.filter(prontuario => prontuario.tipo === 'Procedimento').length;
+
+  seletorPaciente.innerHTML = pacientes.length
+    ? `<option value="">Selecione um pet</option>${pacientes.map(paciente => `
+        <option value="${escaparHtml(paciente.id)}">${escaparHtml(paciente.nome)} · ${escaparHtml(paciente.especie)} — ${escaparHtml(paciente.tutor)}</option>
+      `).join('')}`
+    : '<option value="">Nenhum pet cadastrado</option>';
+  seletorPaciente.disabled = pacientes.length === 0;
+  botaoSalvar.disabled = pacientes.length === 0;
+
+  function desenharHistorico() {
+    const paciente = pacientes.find(item => item.id === seletorPaciente.value);
+    if (!paciente) {
+      resumoPaciente.innerHTML = '';
+      contadorHistorico.textContent = '';
+      lista.innerHTML = '<p class="prontuario-vazio">Selecione um pet para consultar ou registrar sua ficha médica.</p>';
+      return;
+    }
+
+    const registrosPaciente = prontuarios
+      .filter(prontuario => prontuario.pacienteId === paciente.id)
+      .sort((a, b) => b.data.localeCompare(a.data));
+    const termo = filtroHistorico.value.trim().toLowerCase();
+    const filtrados = registrosPaciente.filter(prontuario =>
+      [
+        prontuario.tipo,
+        prontuario.procedimento,
+        prontuario.profissional,
+        prontuario.diagnostico,
+        prontuario.conduta,
+        prontuario.data
+      ].join(' ').toLowerCase().includes(termo)
+    );
+
+    resumoPaciente.innerHTML = `
+      <div class="prontuario-avatar" aria-hidden="true">${escaparHtml(paciente.nome.slice(0, 2).toUpperCase())}</div>
+      <div>
+        <strong>${escaparHtml(paciente.nome)}</strong>
+        <span>${escaparHtml(paciente.especie)} · ${escaparHtml(paciente.raca)}</span>
+        <span>Tutor(a): ${escaparHtml(paciente.tutor)}</span>
+      </div>`;
+    contadorHistorico.textContent = `${filtrados.length} de ${registrosPaciente.length} registro(s) na ficha`;
+    lista.innerHTML = filtrados.length
+      ? filtrados.map(prontuario => `
+          <article class="prontuario-registro">
+            <div class="prontuario-registro-cabecalho">
+              <div>
+                <span class="selo">${escaparHtml(prontuario.tipo)}</span>
+                <h3>${escaparHtml(prontuario.procedimento)}</h3>
+              </div>
+              <time datetime="${escaparHtml(prontuario.data)}">${escaparHtml(prontuario.data.split('-').reverse().join('/'))}</time>
+            </div>
+            <p class="prontuario-profissional">${escaparHtml(prontuario.profissional)}${prontuario.peso ? ` · ${escaparHtml(prontuario.peso)} kg` : ''}</p>
+            ${prontuario.diagnostico ? `<div class="prontuario-detalhe"><strong>Avaliação</strong><p>${escaparHtml(prontuario.diagnostico)}</p></div>` : ''}
+            ${prontuario.conduta ? `<div class="prontuario-detalhe"><strong>Conduta e observações</strong><p>${escaparHtml(prontuario.conduta)}</p></div>` : ''}
+          </article>`).join('')
+      : `<p class="prontuario-vazio">${termo ? 'Nenhum registro corresponde à busca.' : 'Ainda não há atendimentos registrados para este pet.'}</p>`;
+  }
+
+  seletorPaciente.addEventListener('change', desenharHistorico);
+  filtroHistorico.addEventListener('input', desenharHistorico);
+  form.addEventListener('submit', evento => {
+    evento.preventDefault();
+    const peso = document.getElementById('prontuario-peso').value;
+    const novoProntuario = {
+      id: gerarIdentificador('FICHA', prontuarios.map(prontuario => prontuario.id)),
+      pacienteId: seletorPaciente.value,
+      data: document.getElementById('prontuario-data').value,
+      tipo: document.getElementById('prontuario-tipo').value,
+      procedimento: document.getElementById('prontuario-procedimento').value.trim(),
+      profissional: document.getElementById('prontuario-profissional').value.trim(),
+      peso: peso ? Number(peso).toString() : '',
+      diagnostico: document.getElementById('prontuario-diagnostico').value.trim(),
+      conduta: document.getElementById('prontuario-conduta').value.trim()
+    };
+
+    try {
+      const prontuariosAtualizados = [novoProntuario, ...prontuarios];
+      salvarProntuarios(prontuariosAtualizados);
+      prontuarios = prontuariosAtualizados;
+    } catch (erro) {
+      mensagem.textContent = `Não foi possível salvar o atendimento: ${erro.message}`;
+      mensagem.classList.add('erro');
+      return;
+    }
+
+    document.getElementById('total-registros-prontuario').textContent = prontuarios.length;
+    document.getElementById('total-procedimentos-prontuario').textContent =
+      prontuarios.filter(prontuario => prontuario.tipo === 'Procedimento').length;
+    filtroHistorico.value = '';
+    document.getElementById('prontuario-procedimento').value = '';
+    document.getElementById('prontuario-profissional').value = '';
+    document.getElementById('prontuario-peso').value = '';
+    document.getElementById('prontuario-diagnostico').value = '';
+    document.getElementById('prontuario-conduta').value = '';
+    mensagem.textContent = 'Atendimento salvo na ficha médica.';
+    mensagem.classList.remove('erro');
+    desenharHistorico();
+  });
+
+  desenharHistorico();
+}
+
 function iniciarClientes() {
   const form = document.getElementById('form-cliente');
   const petsContainer = document.getElementById('lista-pets-form');
@@ -391,6 +524,7 @@ function gerarIdentificador(prefixo, existentes) {
 const iniciadores = {
   '#login': iniciarLogin,
   '#pacientes': iniciarPacientes,
+  '#procedimentos': iniciarProcedimentos,
   '#clientes': iniciarClientes
 };
 

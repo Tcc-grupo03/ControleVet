@@ -1,0 +1,90 @@
+<div class="procedimentos-pagina">
+  <section class="cabecalho-pagina">
+    <div>
+      <h1>Procedimentos e fichas médicas</h1>
+      <p class="texto-apoio">Registre atendimentos e acompanhe o histórico clínico de cada pet.</p>
+    </div>
+  </section>
+
+  <section class="cards procedimentos-resumo" aria-label="Resumo dos prontuários">
+    <article class="card"><span>Pets cadastrados</span><strong id="total-pets-prontuario">0</strong></article>
+    <article class="card"><span>Registros clínicos</span><strong id="total-registros-prontuario">0</strong></article>
+    <article class="card"><span>Procedimentos</span><strong id="total-procedimentos-prontuario">0</strong></article>
+  </section>
+
+  <div class="procedimentos-layout">
+    <section class="bloco prontuario-cadastro" aria-labelledby="titulo-novo-prontuario">
+      <header class="prontuario-secao-cabecalho">
+        <div>
+          <h2 id="titulo-novo-prontuario">Registrar atendimento</h2>
+          <p class="texto-apoio">As informações serão salvas na ficha médica do pet.</p>
+        </div>
+      </header>
+
+      <form id="form-prontuario">
+        <label>Pet *
+          <select id="prontuario-paciente" required>
+            <option value="">Carregando pacientes...</option>
+          </select>
+        </label>
+
+        <div class="prontuario-form-grid">
+          <label>Data *
+            <input id="prontuario-data" type="date" required>
+          </label>
+          <label>Tipo de atendimento *
+            <select id="prontuario-tipo" required>
+              <option value="">Selecione</option>
+              <option>Consulta</option>
+              <option>Vacinação</option>
+              <option>Exame</option>
+              <option>Procedimento</option>
+              <option>Retorno</option>
+              <option>Outro</option>
+            </select>
+          </label>
+        </div>
+
+        <label>Procedimento ou motivo *
+          <input id="prontuario-procedimento" type="text" required maxlength="120" placeholder="Ex.: Consulta de rotina">
+        </label>
+
+        <div class="prontuario-form-grid">
+          <label>Profissional *
+            <input id="prontuario-profissional" type="text" required maxlength="120" placeholder="Nome do veterinário">
+          </label>
+          <label>Peso (kg)
+            <input id="prontuario-peso" type="number" min="0.1" max="999.99" step="0.01" placeholder="Ex.: 12,5">
+          </label>
+        </div>
+
+        <label>Diagnóstico ou avaliação
+          <textarea id="prontuario-diagnostico" rows="3" maxlength="1000" placeholder="Resumo da avaliação clínica"></textarea>
+        </label>
+
+        <label>Conduta e observações
+          <textarea id="prontuario-conduta" rows="3" maxlength="1000" placeholder="Tratamento, orientações ou recomendações"></textarea>
+        </label>
+
+        <div class="prontuario-form-rodape">
+          <p id="mensagem-prontuario" role="status" aria-live="polite"></p>
+          <button id="salvar-prontuario" class="btn-primario" type="submit">Salvar na ficha</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="bloco prontuario-historico" aria-labelledby="titulo-historico-prontuario">
+      <header class="prontuario-lista-cabecalho">
+        <div>
+          <h2 id="titulo-historico-prontuario">Ficha médica</h2>
+          <p class="texto-apoio">Histórico de procedimentos e atendimentos do paciente selecionado.</p>
+        </div>
+        <input id="filtro-prontuario" type="search" aria-label="Buscar no histórico médico" placeholder="Buscar no histórico">
+      </header>
+
+      <div id="resumo-paciente-prontuario" class="prontuario-paciente-resumo"></div>
+      <p id="contador-historico-prontuario" class="texto-apoio prontuario-contador"></p>
+      <div id="lista-prontuarios" class="prontuario-registros" aria-live="polite"></div>
+    </section>
+  </div>
+</div>

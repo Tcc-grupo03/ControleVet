@@ -653,6 +653,223 @@ label {
   }
 }
 
+.procedimentos-pagina {
+  max-width: 1400px;
+  margin: 0 auto;
+  --procedimentos-borda: #e5eaf0;
+}
+
+.procedimentos-resumo {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.procedimentos-resumo .card {
+  border-color: var(--procedimentos-borda);
+  box-shadow: none;
+}
+
+.procedimentos-resumo .card strong {
+  color: #0f3d3a;
+}
+
+.procedimentos-layout {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.85fr) minmax(0, 1.4fr);
+  align-items: start;
+  gap: 20px;
+}
+
+.prontuario-cadastro,
+.prontuario-historico {
+  min-width: 0;
+  box-shadow: none;
+  border: 1px solid var(--procedimentos-borda);
+}
+
+.prontuario-secao-cabecalho,
+.prontuario-lista-cabecalho {
+  margin-bottom: 20px;
+}
+
+.prontuario-secao-cabecalho h2,
+.prontuario-lista-cabecalho h2 {
+  margin-bottom: 4px;
+}
+
+.prontuario-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.prontuario-form-grid label {
+  min-width: 0;
+}
+
+.procedimentos-pagina textarea {
+  width: 100%;
+  min-height: 82px;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font: inherit;
+  resize: vertical;
+}
+
+.prontuario-form-rodape {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+#mensagem-prontuario {
+  min-height: 1.2em;
+  color: #0f766e;
+  font-size: 0.9rem;
+}
+
+.prontuario-form-rodape button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.prontuario-lista-cabecalho {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.prontuario-lista-cabecalho input {
+  max-width: 240px;
+  background: #fff;
+}
+
+.prontuario-paciente-resumo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid var(--procedimentos-borda);
+  border-radius: 10px;
+  background: #f8fafc;
+}
+
+.prontuario-avatar {
+  display: grid;
+  place-items: center;
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #ccfbf1;
+  color: #115e59;
+  font-weight: bold;
+}
+
+.prontuario-paciente-resumo strong,
+.prontuario-paciente-resumo span {
+  display: block;
+}
+
+.prontuario-paciente-resumo span {
+  margin-top: 3px;
+  color: #64748b;
+  font-size: 0.86rem;
+}
+
+.prontuario-contador {
+  margin: 16px 0 10px;
+}
+
+.prontuario-registros {
+  display: grid;
+  gap: 12px;
+}
+
+.prontuario-registro {
+  padding: 16px;
+  border: 1px solid var(--procedimentos-borda);
+  border-left: 3px solid #0f766e;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.prontuario-registro-cabecalho {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.prontuario-registro-cabecalho h3 {
+  margin-top: 9px;
+  font-size: 1rem;
+}
+
+.prontuario-registro-cabecalho time,
+.prontuario-profissional {
+  color: #64748b;
+  font-size: 0.86rem;
+  white-space: nowrap;
+}
+
+.prontuario-profissional {
+  margin-top: 8px;
+  white-space: normal;
+}
+
+.prontuario-detalhe {
+  margin-top: 14px;
+  font-size: 0.9rem;
+}
+
+.prontuario-detalhe strong {
+  color: #475569;
+  font-size: 0.82rem;
+}
+
+.prontuario-detalhe p {
+  margin-top: 4px;
+  color: #334155;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.prontuario-vazio {
+  padding: 24px 16px;
+  border: 1px dashed #cbd5e1;
+  border-radius: 10px;
+  color: #64748b;
+  text-align: center;
+  line-height: 1.5;
+}
+
+@media (max-width: 980px) {
+  .procedimentos-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .prontuario-form-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .prontuario-lista-cabecalho,
+  .prontuario-form-rodape {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .prontuario-lista-cabecalho input {
+    max-width: none;
+  }
+}
+
 .clientes-pagina {
   max-width: 1200px;
   margin: 0 auto;
