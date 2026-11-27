@@ -227,12 +227,17 @@ function iniciarProcedimentos() {
     const registrosPaciente = prontuarios
       .filter(prontuario => prontuario.pacienteId === paciente.id)
       .sort((a, b) => b.data.localeCompare(a.data));
+    const pesoAtual = registrosPaciente.find(prontuario => prontuario.peso);
+    const pesoFormatado = pesoAtual
+      ? `${pesoAtual.peso.replace('.', ',')} kg`
+      : 'Peso não informado';
     const termo = filtroHistorico.value.trim().toLowerCase();
     const filtrados = registrosPaciente.filter(prontuario =>
       [
         prontuario.tipo,
         prontuario.procedimento,
         prontuario.profissional,
+        prontuario.peso,
         prontuario.diagnostico,
         prontuario.conduta,
         prontuario.data
@@ -243,7 +248,7 @@ function iniciarProcedimentos() {
       <div class="prontuario-avatar" aria-hidden="true">${escaparHtml(paciente.nome.slice(0, 2).toUpperCase())}</div>
       <div>
         <strong>${escaparHtml(paciente.nome)}</strong>
-        <span>${escaparHtml(paciente.especie)} · ${escaparHtml(paciente.raca)}</span>
+        <span>${escaparHtml(paciente.especie)} · ${escaparHtml(paciente.raca)} · ${escaparHtml(pesoFormatado)}</span>
         <span>Tutor(a): ${escaparHtml(paciente.tutor)}</span>
       </div>`;
     contadorHistorico.textContent = `${filtrados.length} de ${registrosPaciente.length} registro(s) na ficha`;
@@ -257,7 +262,7 @@ function iniciarProcedimentos() {
               </div>
               <time datetime="${escaparHtml(prontuario.data)}">${escaparHtml(prontuario.data.split('-').reverse().join('/'))}</time>
             </div>
-            <p class="prontuario-profissional">${escaparHtml(prontuario.profissional)}${prontuario.peso ? ` · ${escaparHtml(prontuario.peso)} kg` : ''}</p>
+            <p class="prontuario-profissional">Doutor(a): ${escaparHtml(prontuario.profissional)}${prontuario.peso ? ` · ${escaparHtml(prontuario.peso.replace('.', ','))} kg` : ''}</p>
             ${prontuario.diagnostico ? `<div class="prontuario-detalhe"><strong>Avaliação</strong><p>${escaparHtml(prontuario.diagnostico)}</p></div>` : ''}
             ${prontuario.conduta ? `<div class="prontuario-detalhe"><strong>Conduta e observações</strong><p>${escaparHtml(prontuario.conduta)}</p></div>` : ''}
           </article>`).join('')
