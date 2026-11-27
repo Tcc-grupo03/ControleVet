@@ -262,7 +262,7 @@ function iniciarProcedimentos() {
               </div>
               <time datetime="${escaparHtml(prontuario.data)}">${escaparHtml(prontuario.data.split('-').reverse().join('/'))}</time>
             </div>
-            <p class="prontuario-profissional">Doutor(a): ${escaparHtml(prontuario.profissional)}${prontuario.peso ? ` · ${escaparHtml(prontuario.peso.replace('.', ','))} kg` : ''}</p>
+            <p class="prontuario-profissional">Doutor(a): ${escaparHtml(prontuario.profissional)}</p>
             ${prontuario.diagnostico ? `<div class="prontuario-detalhe"><strong>Avaliação</strong><p>${escaparHtml(prontuario.diagnostico)}</p></div>` : ''}
             ${prontuario.conduta ? `<div class="prontuario-detalhe"><strong>Conduta e observações</strong><p>${escaparHtml(prontuario.conduta)}</p></div>` : ''}
           </article>`).join('')
