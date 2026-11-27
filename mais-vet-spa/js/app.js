@@ -48,7 +48,11 @@ async function carregarPagina() {
   menu.classList.toggle('oculto', rota.publica === true && !logado);
 
   document.querySelectorAll('#menu nav a').forEach(link => {
-    link.classList.toggle('ativo', link.getAttribute('href') === hash);
+    const ativo = link.getAttribute('href') === hash;
+    link.classList.toggle('ativo', ativo);
+    link.querySelectorAll('i').forEach(icone => {
+      icone.classList.toggle('fa-jello', ativo);
+    });
   });
   document.title = `${rota.titulo} · MaisVET`;
 
