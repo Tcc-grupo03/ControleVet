@@ -11,6 +11,7 @@ const pacientes = [
 const CHAVE_CLIENTES = 'maisvet-clientes';
 const CHAVE_MIGRACAO_CLIENTES = 'maisvet-clientes-pacientes-migrados';
 const CHAVE_PRONTUARIOS = 'maisvet-prontuarios';
+export const CHAVE_PACIENTE_PRONTUARIO_SELECIONADO = 'paciente-prontuario-selecionado';
 const TIPOS_PRONTUARIO = ['Consulta', 'Vacinação', 'Exame', 'Procedimento', 'Retorno', 'Outro'];
 
 const contatosDemonstracao = {
@@ -114,7 +115,7 @@ function mesclarClientesDosPacientes(clientes) {
   return clientes;
 }
 
-function carregarClientes() {
+export function carregarClientes() {
   const dados = localStorage.getItem(CHAVE_CLIENTES);
   let clientes = [];
   if (dados) {
@@ -151,11 +152,11 @@ function carregarClientes() {
   return clientes;
 }
 
-function salvarClientes(clientes) {
+export function salvarClientes(clientes) {
   localStorage.setItem(CHAVE_CLIENTES, JSON.stringify(clientes));
 }
 
-function carregarProntuarios() {
+export function carregarProntuarios() {
   const dados = localStorage.getItem(CHAVE_PRONTUARIOS);
   if (!dados) return [];
 
@@ -186,11 +187,11 @@ function carregarProntuarios() {
   return prontuarios;
 }
 
-function salvarProntuarios(prontuarios) {
+export function salvarProntuarios(prontuarios) {
   localStorage.setItem(CHAVE_PRONTUARIOS, JSON.stringify(prontuarios));
 }
 
-function obterPacientes() {
+export function obterPacientes() {
   return carregarClientes().flatMap(cliente =>
     cliente.pets.map(pet => ({
       ...pet,

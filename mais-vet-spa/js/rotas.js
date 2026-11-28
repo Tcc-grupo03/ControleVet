@@ -1,4 +1,4 @@
-const rotas = {
+export const rotas = {
   '#login':          { pagina: 'pages/login.html',      titulo: 'Entrar',          publica: true },
   '#cadastro':       { pagina: 'pages/em-breve.html',   titulo: 'Criar conta',     publica: true },
   '#visao-geral':    { pagina: 'pages/visao-geral.html', titulo: 'Visão geral' },
